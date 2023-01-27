@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import crud from '../services/CrudService';
 import { Link } from 'react-router-dom';
+import { setUser1 } from '../redux/actions/userAction';
 
 export default function UserListing() {
+    let dispatch = useDispatch();
     let [users, setUsers] = useState([]);
     // console.log(users);
-    // let usersNew = useSelector(state => state.allUsers.users);
-    // console.log(usersNew);
+    let usersNew = useSelector(state => state.allUsers.users);
+    console.log(usersNew);
 
     const fetchAllUserListing = async () => {
         crud.getData('/users')
@@ -15,7 +17,7 @@ export default function UserListing() {
                 setUsers(response.data);
                 // console.log(response.data);
                 // console.log(typeof response.data);
-                // dispatch(setUser1(response.data))
+                dispatch(setUser1(response.data))
             })
             .catch(err => console.log(err));
     }
