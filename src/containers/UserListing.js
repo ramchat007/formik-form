@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 export default function UserListing() {
     let [users, setUsers] = useState([]);
+    // console.log(users);
     // let usersNew = useSelector(state => state.allUsers.users);
     // console.log(usersNew);
 
@@ -12,13 +13,14 @@ export default function UserListing() {
         crud.getData('/users')
             .then(response => {
                 setUsers(response.data);
-                console.log(response.data);
+                // console.log(response.data);
+                // console.log(typeof response.data);
                 // dispatch(setUser1(response.data))
             })
             .catch(err => console.log(err));
     }
-    const handleClick = (id) => {
-        console.log(id);
+    const handleDelete = (id) => {
+        // console.log(id);
         crud.deleteData(`/users/${id}`)
     }
 
@@ -32,14 +34,14 @@ export default function UserListing() {
             <ul className='listingWrap'>
                 {
                     users && users.map(obj =>
-                        <li className='card' key={obj.username}>
+                        <li className='card' key={obj.id}>
                             <div className="card-body">
-                                <h5 className="card-title">{obj.name}</h5>
+                                <h5 className="card-title">{obj.name.firstname} {obj.name.lastname}</h5>
                                 <h6 className="card-subtitle mb-2 text-muted">{obj.roleKey}</h6>
                                 <p className="card-text">{obj.email}</p>
-                                <p className="card-text">{obj.mobile}</p>
-                                <button className='btn btn-secondary' onClick={function () { handleClick(obj.id) }}>Edit</button>
-                                <button className='btn btn-danger ms-2' onClick={function () { handleClick(obj.id) }}>Delete</button>
+                                <p className="card-text">{obj.phone}</p>
+                                <Link className="btn btn-secondary" aria-current="page" to={`/edit-user/${obj.id}`}>Edit </Link>
+                                <button className='btn btn-danger ms-2' onClick={function () { handleDelete(obj.id) }}>Delete</button>
                             </div>
                         </li>)
                 }

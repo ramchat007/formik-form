@@ -1,32 +1,14 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from "yup";
+import React, { useEffect, useState } from 'react';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import crudServ from '../services/CrudService';
-import { setUser1 } from '../redux/actions/userAction';
 import { useParams } from 'react-router-dom';
 
-const CreateUser = () => {
+const EditUser = () => {
+
+    const [formValues, setFormValues] = useState({});
     const { id } = useParams();
     const isAddMode = !id;
-    let dispatch = useDispatch();
-    // const validationSchema = Yup.object().shape({
-    //     username: Yup.string()
-    //         .required('Username is required'),
-    //     email: Yup.string()
-    //         .email('Email is invalid')
-    //         .required('Email is required'),
-    //     role: Yup.string()
-    //         .required('Role is required'),
-    //     password: Yup.string()
-    //         .concat(isAddMode ? Yup.string().required('Password is required') : null)
-    //         .min(6, 'Password must be at least 6 characters'),
-    //     confirmPassword: Yup.string()
-    //         .when('password', (password, schema) => {
-    //             if (password || isAddMode) return schema.required('Confirm Password is required');
-    //         })
-    //         .oneOf([Yup.ref('password')], 'Passwords must match')
-    // });
 
     const initialValues = {
         username: "",
@@ -41,6 +23,24 @@ const CreateUser = () => {
         cPassword: ''
     };
 
+    const validationSchema = Yup.object().shape({
+        username: Yup.string()
+            .required('Username is required'),
+        email: Yup.string()
+            .email('Email is invalid')
+            .required('Email is required'),
+        role: Yup.string()
+            .required('Role is required'),
+        password: Yup.string()
+            .concat(isAddMode ? Yup.string().required('Password is required') : null)
+            .min(6, 'Password must be at least 6 characters'),
+        confirmPassword: Yup.string()
+            .when('password', (password, schema) => {
+                if (password || isAddMode) return schema.required('Confirm Password is required');
+            })
+            .oneOf([Yup.ref('password')], 'Passwords must match')
+    });
+
     const handleSubmit = (values) => {
         console.log(values);
         var { username, firstname, lastname, email, phone, roleKey, password } = values
@@ -52,22 +52,34 @@ const CreateUser = () => {
             "roleKey": roleKey,
             "password": password
         }
-        crudServ.postData("/users", rec)
+        crudServ.updateData(`/users/${id}`, rec)
             .then(res => {
                 console.log(res)
-                dispatch(setUser1(res.data))
             }
             )
             .catch(err => console.log(err));
     }
+
+
+    useEffect(() => {
+        if (!isAddMode) {
+
+            crudServ.getData(`/users/${id}`)
+                .then(res => {
+                    // console.log(res.data.name)
+                    setFormValues(res.data)
+                }
+                )
+                .catch(err => console.log(err));
+        }
+    }, []);
     return (
         <div className='mt-4'>
-            <h1>Create new user</h1>
+            <h1>{isAddMode ? 'Add User' : 'Edit User'}</h1>
             <Formik
-                initialValues={initialValues}
-                // validationSchema={validationSchema}
-                onSubmit={handleSubmit}>
-                {({ values, errors, touched }) => (
+                initialValues={formValues || initialValues} validationSchema={validationSchema}
+                onSubmit={handleSubmit} enableReinitialize>
+                {({ errors, touched }) => (
                     <Form className='row'>
                         <div className='col-sm-6'>
                             <div className="form-group">
@@ -78,13 +90,13 @@ const CreateUser = () => {
                         <div className='col-sm-6'>
                             <div className="form-group">
                                 <label htmlFor="firstname">First Name</label>
-                                <Field type="text" name="firstname" className="form-control" id="firstname" placeholder="First Name" />
+                                <Field type="text" name="name.firstname" className="form-control" id="firstname" placeholder="First Name" />
                             </div>
                         </div>
                         <div className='col-sm-6'>
                             <div className="form-group">
                                 <label htmlFor="lastname">Last Name</label>
-                                <Field type="text" name="lastname" className="form-control" id="lastname" placeholder="Last Name" />
+                                <Field type="text" name="name.lastname" className="form-control" id="lastname" placeholder="Last Name" />
                             </div>
                         </div>
                         <div className='col-sm-6'>
@@ -137,4 +149,4 @@ const CreateUser = () => {
         </div >
     )
 }
-export default CreateUser;
+export default EditUser;

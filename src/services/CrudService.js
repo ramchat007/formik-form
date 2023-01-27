@@ -8,7 +8,6 @@ class CrudService {
     async postData(path, data) {
         // console.log(path, data);
         return await http.post(path, data);
-
     }
     async deleteData(path) {
         return await http.delete(path);

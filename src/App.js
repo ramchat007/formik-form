@@ -10,6 +10,7 @@ import Home from './containers/Home';
 import UserListing from './containers/UserListing';
 import RoleListing from './containers/RoleListing';
 import CreateUser from './containers/CreateUser';
+import EditUser from './containers/EditUser';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/user-listing" element={<UserListing />}></Route>
             <Route path="/role-listing" element={<RoleListing />}></Route>
             <Route path="/create-user" element={<CreateUser />}></Route>
+            <Route path="/edit-user/:id" element={<EditUser />}></Route>
           </Routes>
         </div>
       </BrowserRouter>
