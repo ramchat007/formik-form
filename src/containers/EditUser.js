@@ -5,7 +5,6 @@ import crudServ from '../services/CrudService';
 import { useParams } from 'react-router-dom';
 
 const EditUser = () => {
-
     const [formValues, setFormValues] = useState({});
     const { id } = useParams();
     const isAddMode = !id;
@@ -85,6 +84,10 @@ const EditUser = () => {
                             <div className="form-group">
                                 <label htmlFor="username">User Name</label>
                                 <Field type="text" name="username" className="form-control" id="username" placeholder="User Name" />
+                                {errors.username && touched.username ? (
+                                    <ErrorMessage name="username" />
+                                ) : null}
+
                             </div>
                         </div>
                         <div className='col-sm-6'>

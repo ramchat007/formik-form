@@ -1,31 +1,14 @@
 {
   "users": [
     {
-      "name": "ram11",
-      "email": "santoshghatge85@gmail.com",
-      "username": "ram1",
-      "mobile": 9899123321,
-      "roleKey": "",
-      "password": "qqqq",
-      "id": 2
-    },
-    {
-      "name": "ram112",
-      "email": "santoshghatge85@gmail.com",
-      "username": "ram12",
-      "mobile": 9899123321,
-      "roleKey": "",
-      "password": "qqqq",
-      "id": 3
-    },
-    {
-      "name": "ram1",
-      "email": "",
-      "username": "ram",
-      "mobile": 9820160376,
-      "roleKey": "",
-      "password": "qqqq",
-      "id": 4
+      "firstname": "Rupesh",
+      "lastname": "Mestry",
+      "username": "rupesh.mestry",
+      "email": "ramc@g.com",
+      "password": "111111",
+      "confirmPassword": "111111",
+      "roleKey": "Role 1",
+      "id": 1
     }
   ]
 }
