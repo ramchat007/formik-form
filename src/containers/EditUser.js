@@ -3,9 +3,11 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import crudServ from '../services/CrudService';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const EditUser = () => {
     const [formValues, setFormValues] = useState({});
+    let usersNew = useSelector(state => state.allUsers.users);
     const { id } = useParams();
     const isAddMode = !id;
 
@@ -21,6 +23,10 @@ const EditUser = () => {
         password: "",
         cPassword: ''
     };
+
+    const fetchAllUserListing = async () => {
+        setFormValues(usersNew);
+    }
 
     const validationSchema = Yup.object().shape({
         username: Yup.string()
@@ -62,14 +68,14 @@ const EditUser = () => {
 
     useEffect(() => {
         if (!isAddMode) {
-
-            crudServ.getData(`/users/${id}`)
-                .then(res => {
-                    // console.log(res.data.name)
-                    setFormValues(res.data)
-                }
-                )
-                .catch(err => console.log(err));
+            fetchAllUserListing();
+            // crudServ.getData(`/users/${id}`)
+            //     .then(res => {
+            //         // console.log(res.data.name)
+            //         setFormValues(res.data)
+            //     }
+            //     )
+            //     .catch(err => console.log(err));
         }
     }, []);
     return (

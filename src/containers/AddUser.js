@@ -2,12 +2,15 @@ import React from 'react';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
-import crudServ from '../services/CrudService';
+// import crudServ from '../services/CrudService';
 import { setUser1 } from '../redux/actions/userAction';
 import { useNavigate } from 'react-router-dom';
+import { newUser } from '../store/slices/UserSlice';
+
 function AddUser() {
     let dispatch = useDispatch();
     let navigate = useNavigate();
+
     const validationSchema = Yup.object().shape({
         firstname: Yup.string().required("Firstname is required"),
         lastname: Yup.string().required("Lastname is required"),
@@ -40,30 +43,32 @@ function AddUser() {
         // validateOnChange: false,
         // validateOnBlur: false,
         onSubmit: async (data) => {
+            dispatch(setUser1([data]));
+            dispatch(newUser(data))
+            navigate("/user-listing")
             // console.log(JSON.stringify(data, null, 2));
-            let emailFound = false;
-            const existingData = await crudServ.getData("/users")
-                .then(res => { return res.data })
-                .catch(err => console.log(err));
-            existingData.filter(res => {
-                if (res.email !== data.email) {
-                    emailFound = false
-                } else {
-                    emailFound = true
-                    console.log("Email already exists");
-                    formik.errors.email = "Email already exists"
-                }
-            })
-            if (!emailFound) {
-                crudServ.postData("/users", data)
-                    .then(res => {
-                        console.log(res.data);
-                        dispatch(setUser1(res.data))
-                        navigate("/user-listing")
-                    }
-                    )
-                    .catch(err => console.log(err));
-            }
+            // let emailFound = false;
+            // const existingData = await crudServ.getData("/users")
+            //     .then(res => { return res.data })
+            //     .catch(err => console.log(err));
+            // existingData.filter(res => {
+            //     if (res.email !== data.email) {
+            //         emailFound = false
+            //     } else {
+            //         emailFound = true
+            //         console.log("Email already exists");
+            //         formik.errors.email = "Email already exists"
+            //     }
+            // })
+            // if (!emailFound) {
+            //     crudServ.postData("/users", data)
+            //         .then(res => {
+            //             console.log(res.data);
+
+            //         }
+            //         )
+            //         .catch(err => console.log(err));
+            // }
 
 
 

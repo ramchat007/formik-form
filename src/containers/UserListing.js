@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import crud from '../services/CrudService';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from '../store/slices/UserSlice';
 
 export default function UserListing() {
     let [users, setUsers] = useState([]);
-    // console.log(users);
     // let usersNew = useSelector(state => state.allUsers.users);
+    let usersNew = useSelector(state => state.users)
+
+    let dispatch = useDispatch();
+    // console.log(typeof users);
+    // console.log(users);
+    // console.log(typeof usersNew);
     // console.log(usersNew);
 
     const fetchAllUserListing = async () => {
+        dispatch(fetchUser())
+        setUsers(usersNew);
         // crud.getData('/users')
         //     .then(response => {
         //         setUsers(response.data);
@@ -17,13 +26,13 @@ export default function UserListing() {
         //     })
         //     .catch(err => console.log(err));
     }
-    const handleDelete = (id) => {
+    function handleDelete(id) {
         // console.log(id);
-        crud.deleteData(`/users/${id}`)
+        crud.deleteData(`/users/${id}`);
     }
 
     useEffect(() => {
-        fetchAllUserListing();
+        fetchAllUserListing()
     }, []);
 
     return (
@@ -31,8 +40,8 @@ export default function UserListing() {
             <Link className="btn btn-primary" aria-current="page" to="/add-user">Add User</Link>
             <ul className='listingWrap'>
                 {
-                    users && users.map(obj =>
-                        <li className='card' key={obj.id}>
+                    users && users.map((obj) =>
+                        <li className='card' key={obj.username}>
                             <div className="card-body">
                                 <h5 className="card-title">{obj.firstname} {obj.lastname}</h5>
                                 <h6 className="card-subtitle mb-2 text-muted">{obj.roleKey}</h6>
