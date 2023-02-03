@@ -1,15 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-// import crudServ from '../services/CrudService';
-import { setUser1 } from '../redux/actions/userAction';
-import { useNavigate } from 'react-router-dom';
+import crudServ from '../services/CrudService';
+// import { setUser1 } from '../redux/actions/userAction';
+import { useNavigate, useParams } from 'react-router-dom';
 import { newUser } from '../store/slices/UserSlice';
 
 function AddUser() {
     let dispatch = useDispatch();
     let navigate = useNavigate();
+    const [formValues, setFormValues] = useState({
+        firstname: "",
+        lastname: "",
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        roleKey: ''
+    });
+    const { id } = useParams();
+    const isAddMode = !id;
+
+    const fetchAllUserListing = async () => {
+        if (!isAddMode) {
+            crudServ.getData(`/users/${id}`)
+                .then(res => {
+                    let newData = res.data
+                    newData.password = '';
+                    newData.confirmPassword = '';
+                    setFormValues(newData)
+                }
+                )
+                .catch(err => console.log(err));
+        }
+
+        // setFormValues(usersNew);
+    }
 
     const validationSchema = Yup.object().shape({
         firstname: Yup.string().required("Firstname is required"),
@@ -28,47 +55,64 @@ function AddUser() {
             .required('Confirm Password is required')
             .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
     });
+    // const initialValues = {
+    //     id: 0,
+    //     firstname: "",
+    //     lastname: "",
+    //     username: '',
+    //     email: '',
+    //     password: '',
+    //     confirmPassword: '',
+    //     roleKey: ''
+    // };
 
     const formik = useFormik({
-        initialValues: {
-            firstname: "",
-            lastname: "",
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            roleKey: ''
-        },
+        initialValues: formValues,
         validationSchema,
+        enableReinitialize: true,
         // validateOnChange: false,
         // validateOnBlur: false,
         onSubmit: async (data) => {
-            dispatch(setUser1([data]));
-            dispatch(newUser(data))
-            navigate("/user-listing")
+            // dispatch(setUser1([data]));
+            // console.log(data);
+            // console.log(formValues);
             // console.log(JSON.stringify(data, null, 2));
-            // let emailFound = false;
-            // const existingData = await crudServ.getData("/users")
-            //     .then(res => { return res.data })
-            //     .catch(err => console.log(err));
-            // existingData.filter(res => {
-            //     if (res.email !== data.email) {
-            //         emailFound = false
-            //     } else {
-            //         emailFound = true
-            //         console.log("Email already exists");
-            //         formik.errors.email = "Email already exists"
-            //     }
-            // })
-            // if (!emailFound) {
-            //     crudServ.postData("/users", data)
-            //         .then(res => {
-            //             console.log(res.data);
+            if (isAddMode) {
+                let emailFound = false;
+                const existingData = await crudServ.getData("/users")
+                    .then(res => { return res.data })
+                    .catch(err => console.log(err));
+                existingData.filter(res => {
+                    if (res.email !== data.email) {
+                        emailFound = false
+                    } else {
+                        emailFound = true
+                        console.log("Email already exists");
+                        formik.errors.email = "Email already exists"
+                    }
+                })
+                if (!emailFound) {
+                    crudServ.postData("/users", data)
+                        .then(res => {
+                            console.log(res.data);
+                            dispatch(newUser(res.data))
+                            navigate("/user-listing")
 
-            //         }
-            //         )
-            //         .catch(err => console.log(err));
-            // }
+                        }
+                        )
+                        .catch(err => console.log(err));
+                }
+            } else {
+                crudServ.updateData(`/users/${id}`, data)
+                    .then(res => {
+                        console.log(res.data);
+                        dispatch(newUser(res.data))
+                        navigate("/user-listing")
+
+                    }
+                    )
+                    .catch(err => console.log(err));
+            }
 
 
 
@@ -98,8 +142,15 @@ function AddUser() {
         },
     });
 
+    useEffect(() => {
+        if (!isAddMode) {
+            fetchAllUserListing();
+        }
+    }, []);
+
     return (
         <div className="register-form">
+            <h1>{isAddMode ? 'Add User' : 'Edit User'}</h1>
             <form className='row' onSubmit={formik.handleSubmit}>
                 <div className="form-group col-sm-6">
                     <label>First Name</label>

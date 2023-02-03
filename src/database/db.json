@@ -5,10 +5,20 @@
       "lastname": "Mestry",
       "username": "rupesh.mestry",
       "email": "ramc@g.com",
-      "password": "111111",
-      "confirmPassword": "111111",
+      "password": "222222",
+      "confirmPassword": "222222",
       "roleKey": "Role 1",
       "id": 1
+    },
+    {
+      "id": 2,
+      "firstname": "Rupesh",
+      "lastname": "Mestry",
+      "username": "rupesh.mestry",
+      "email": "sdfd@fff.com",
+      "password": "111111",
+      "confirmPassword": "111111",
+      "roleKey": "Role 1"
     }
   ]
 }

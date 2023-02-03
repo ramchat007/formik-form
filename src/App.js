@@ -10,7 +10,7 @@ import Home from './containers/Home';
 import UserListing from './containers/UserListing';
 import RoleListing from './containers/RoleListing';
 import CreateUser from './containers/CreateUser';
-import EditUser from './containers/EditUser';
+// import EditUser from './containers/EditUser';
 import AddUser from './containers/AddUser';
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
             <Route path="/user-listing" element={<UserListing />}></Route>
             <Route path="/role-listing" element={<RoleListing />}></Route>
             <Route path="/create-user" element={<CreateUser />}></Route>
-            <Route path="/edit-user/:id" element={<EditUser />}></Route>
+            <Route path="/add-user/:id" element={<AddUser />}></Route>
             <Route path="/add-user" element={<AddUser />}></Route>
           </Routes>
         </div>
