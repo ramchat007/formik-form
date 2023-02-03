@@ -11,14 +11,24 @@
       "id": 1
     },
     {
-      "firstname": "12324",
+      "firstname": "Rupesh",
       "lastname": "Mestry",
-      "username": "kerast",
-      "email": "john@gmail.com",
+      "username": "johndf",
+      "email": "ramc@g.com",
       "password": "111111",
       "confirmPassword": "111111",
-      "roleKey": "role4",
-      "id": 2
+      "roleKey": "role1",
+      "id": 3
+    },
+    {
+      "firstname": "Rupesh",
+      "lastname": "Mestry",
+      "username": "rupesh.mestry",
+      "email": "ramchat007@gmail.com",
+      "password": "111111",
+      "confirmPassword": "111111",
+      "roleKey": "role1",
+      "id": 4
     }
   ],
   "roledata": [
