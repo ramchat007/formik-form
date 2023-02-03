@@ -3,13 +3,13 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import crudServ from '../services/CrudService';
-// import { setUser1 } from '../redux/actions/userAction';
 import { useNavigate, useParams } from 'react-router-dom';
 import { newUser } from '../store/slices/UserSlice';
 
 function AddUser() {
     let dispatch = useDispatch();
     let navigate = useNavigate();
+    const [roleData, setRoleData] = useState([]);
     const [formValues, setFormValues] = useState({
         firstname: "",
         lastname: "",
@@ -17,11 +17,19 @@ function AddUser() {
         email: '',
         password: '',
         confirmPassword: '',
-        roleKey: ''
+        roleKey: ""
     });
     const { id } = useParams();
     const isAddMode = !id;
 
+    const fetchRole = async () => {
+        crudServ.getData(`/roledata`)
+            .then(res => {
+                setRoleData(res.data)
+            }
+            )
+            .catch(err => console.log(err));
+    }
     const fetchAllUserListing = async () => {
         if (!isAddMode) {
             crudServ.getData(`/users/${id}`)
@@ -34,8 +42,6 @@ function AddUser() {
                 )
                 .catch(err => console.log(err));
         }
-
-        // setFormValues(usersNew);
     }
 
     const validationSchema = Yup.object().shape({
@@ -55,28 +61,12 @@ function AddUser() {
             .required('Confirm Password is required')
             .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
     });
-    // const initialValues = {
-    //     id: 0,
-    //     firstname: "",
-    //     lastname: "",
-    //     username: '',
-    //     email: '',
-    //     password: '',
-    //     confirmPassword: '',
-    //     roleKey: ''
-    // };
 
     const formik = useFormik({
         initialValues: formValues,
         validationSchema,
         enableReinitialize: true,
-        // validateOnChange: false,
-        // validateOnBlur: false,
         onSubmit: async (data) => {
-            // dispatch(setUser1([data]));
-            // console.log(data);
-            // console.log(formValues);
-            // console.log(JSON.stringify(data, null, 2));
             if (isAddMode) {
                 let emailFound = false;
                 const existingData = await crudServ.getData("/users")
@@ -115,30 +105,6 @@ function AddUser() {
             }
 
 
-
-            // var ans_search = existingData.email.indexOf(data.email);
-            // console.log(ans_search);
-
-            // if (ans_search == -1 || ans_search === undefined) {
-            //     console.log("Not Found");
-            // }
-            // else {
-            //     alert('exist');
-            // }
-            // for (let element of existingData) {
-            //     console.log(element.email);
-            //     if (element.email === data.email) {
-            //         console.log("Email already exists");
-            //     } else {
-            // crudServ.postData("/users", data)
-            //     .then(res => {
-            //         console.log(res.data);
-            //         // dispatch(setUser1(res))
-            //     }
-            //     )
-            //     .catch(err => console.log(err));
-            // }
-            // }
         },
     });
 
@@ -146,6 +112,7 @@ function AddUser() {
         if (!isAddMode) {
             fetchAllUserListing();
         }
+        fetchRole();
     }, []);
 
     return (
@@ -240,10 +207,12 @@ function AddUser() {
                         value={formik.values.roleKey}
                         onChange={formik.handleChange}
                     >
-                        <option value="">Select Role</option>
-                        <option value="Role 1">Role 1</option>
-                        <option value="Role 2">Role 2</option>
-                        <option value="Role 3">Role 3</option>
+                        {<option value="">Select Role</option>}
+                        {
+                            roleData && roleData.map((val) => {
+                                return <option key={val.roleKey} value={val.roleKey}>{val.roleLabel}</option>
+                            })
+                        }
                     </select>
                     {/* <div className="invalid-feedback"> */}
                     {formik.errors.roleKey && formik.touched.roleKey
@@ -296,14 +265,7 @@ function AddUser() {
 
                 <div className="form-group">
                     <button type="submit" className="btn btn-primary">
-                        Register
-                    </button>
-                    <button
-                        type="button"
-                        className="btn btn-primary btn-warning ms-2"
-                        onClick={formik.handleReset}
-                    >
-                        Reset
+                        {isAddMode ? 'Register' : 'Update'}
                     </button>
                 </div>
             </form>
