@@ -1,5 +1,4 @@
-{
-  "users": [
+[
     {
       "firstname": "Rupesh",
       "lastname": "Mestry",
@@ -30,27 +29,4 @@
       "roleKey": "role1",
       "id": 4
     }
-  ],
-  "roledata": [
-    {
-      "id": 1,
-      "roleLabel": "Role 1",
-      "roleKey": "role1"
-    },
-    {
-      "id": 2,
-      "roleLabel": "Role 2",
-      "roleKey": "role2"
-    },
-    {
-      "id": 3,
-      "roleLabel": "Role 3",
-      "roleKey": "role3"
-    },
-    {
-      "id": 4,
-      "roleLabel": "Role 4",
-      "roleKey": "role4"
-    }
   ]
-}
