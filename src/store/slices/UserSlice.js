@@ -10,11 +10,15 @@ const userSlice = createSlice({
         fetchUser(state, action) {
             return action.payload
         },
-        removeUser(state, action) { }
+        removeUser(state, action) {
+            console.log(state);
+            console.log(action);
+            console.log(action.payload);
+            state.splice(action.payload, 1)
+            // return state
+        }
     }
 })
 
 export default userSlice.reducer;
-export const { newUser } = userSlice.actions
-export const { fetchUser } = userSlice.actions
-export const { removeUser } = userSlice.actions
+export const { newUser, fetchUser, removeUser } = userSlice.actions;
