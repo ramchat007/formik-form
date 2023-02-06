@@ -1,30 +1,8 @@
 {
-      "firstname": "Rupesh",
-      "lastname": "Mestry",
-      "username": "rupesh.mestry",
-      "email": "sdfd@fff.com",
-      "password": "111111",
-      "confirmPassword": "111111",
-      "roleKey": "role2",
-      "id": 1
-    },
-    {
-      "firstname": "Rupesh",
-      "lastname": "Mestry",
-      "username": "johndf",
-      "email": "ramc@g.com",
-      "password": "111111",
-      "confirmPassword": "111111",
-      "roleKey": "role1",
-      "id": 3
-    },
-    {
-      "firstname": "Rupesh",
-      "lastname": "Mestry",
-      "username": "rupesh.mestry",
-      "email": "ramchat007@gmail.com",
-      "password": "111111",
-      "confirmPassword": "111111",
-      "roleKey": "role1",
-      "id": 4
-    }
+  "category": {
+    "string": ["One", "Two"]
+  },
+  "code": {
+    "int": [100, 200, 300]
+  }
+}
