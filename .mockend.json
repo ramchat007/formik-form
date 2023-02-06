@@ -1,66 +1,56 @@
 {
-  "Post": {
-    "_": {
-      "items": 10
+  "users": [
+    {
+      "firstname": "Rupesh",
+      "lastname": "Mestry",
+      "username": "rupesh.mestry",
+      "email": "sdfd@fff.com",
+      "password": "111111",
+      "confirmPassword": "111111",
+      "roleKey": "role2",
+      "id": 1
     },
-    "cover": {
-      "regexp": "https://picsum\\.photos/seed/[0-9]{5}/1920/270"
+    {
+      "firstname": "Rupesh",
+      "lastname": "Mestry",
+      "username": "johndf",
+      "email": "ramc@g.com",
+      "password": "111111",
+      "confirmPassword": "111111",
+      "roleKey": "role1",
+      "id": 3
     },
-    "title": {
-      "loremWords": {
-        "minLength": 5,
-        "maxLength": 20
-      }
-    },
-    "body": {
-      "loremParagraphs": {
-        "minLength": 10,
-        "maxLength": 100
-      }
-    },
-    "category": {
-      "string": ["one", "two", "three"]
-    },
-    "isDraft": {
-      "boolean": {}
-    },
-    "views": {
-      "int": {
-        "min": 0,
-        "max": 1000
-      }
-    },
-    "createdAt": {
-      "dateTime": {
-        "min": "2010-01-01T00:00:00Z",
-        "max": "2020-12-31T23:59:59Z"
-      }
-    },
-    "comments": {
-      "hasMany": "Comment"
+    {
+      "firstname": "Rupesh",
+      "lastname": "Mestry",
+      "username": "rupesh.mestry",
+      "email": "ramchat007@gmail.com",
+      "password": "111111",
+      "confirmPassword": "111111",
+      "roleKey": "role1",
+      "id": 4
     }
-  },
-  "Comment": {
-    "_": {
-      "items": 25
+  ],
+  "roledata": [
+    {
+      "id": 1,
+      "roleLabel": "Role 1",
+      "roleKey": "role1"
     },
-    "email": {
-      "regexp": "[a-z]{5,10}@[a-z]{5}\\.[a-z]{2,3}"
+    {
+      "id": 2,
+      "roleLabel": "Role 2",
+      "roleKey": "role2"
     },
-    "body": {
-      "loremParagraphs": {
-        "minLength": 10,
-        "maxLength": 100
-      }
+    {
+      "id": 3,
+      "roleLabel": "Role 3",
+      "roleKey": "role3"
     },
-    "createdAt": {
-      "dateTime": {
-        "min": "2010-01-01T00:00:00Z",
-        "max": "2020-12-31T23:59:59Z"
-      }
-    },
-    "post": {
-      "belongsTo": "Post"
+    {
+      "id": 4,
+      "roleLabel": "Role 4",
+      "roleKey": "role4"
     }
-  }
+  ]
 }
