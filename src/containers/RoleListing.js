@@ -1,21 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import crudServ from '../services/CrudService';
-import { Link } from 'react-router-dom';
+// import crudServ from '../services/CrudService';
+// import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { fetchRole } from '../store/slices/RoleSlice';
+
 
 export default function RoleListing() {
-    let [roleData, setRoleData] = useState([]);
+    let dispatch = useDispatch();
+    let [roleData, setRoleData] = useState([
+        {
+            "id": 1,
+            "roleLabel": "Role 1",
+            "roleKey": "role1"
+        },
+        {
+            "id": 2,
+            "roleLabel": "Role 2",
+            "roleKey": "role2"
+        },
+        {
+            "id": 3,
+            "roleLabel": "Role 3",
+            "roleKey": "role3"
+        },
+        {
+            "id": 4,
+            "roleLabel": "Role 4",
+            "roleKey": "role4"
+        }
+    ]);
 
-    const fetchRole = async () => {
-        crudServ.getData(`/roledata`)
-            .then(res => {
-                setRoleData(res.data)
-            }
-            )
-            .catch(err => console.log(err));
+    const fetchRoleData = async () => {
+        dispatch(fetchRole(roleData))
+        //     crudServ.getData(`/roledata`)
+        //         .then(res => {
+        //             setRoleData(res.data)
+        //         }
+        //         )
+        //         .catch(err => console.log(err));
     }
 
     useEffect(() => {
-        fetchRole()
+        fetchRoleData()
     }, []);
 
     return (

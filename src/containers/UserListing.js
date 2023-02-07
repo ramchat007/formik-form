@@ -1,25 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import crud from '../services/CrudService';
+// import crud from '../services/CrudService';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, removeUser } from '../store/slices/UserSlice';
+import { fetchRole } from '../store/slices/RoleSlice';
 
 export default function UserListing() {
     let [users, setUsers] = useState([]);
+    let [roleData, setRoleData] = useState([
+        {
+            "id": 1,
+            "roleLabel": "Role 1",
+            "roleKey": "role1"
+        },
+        {
+            "id": 2,
+            "roleLabel": "Role 2",
+            "roleKey": "role2"
+        },
+        {
+            "id": 3,
+            "roleLabel": "Role 3",
+            "roleKey": "role3"
+        },
+        {
+            "id": 4,
+            "roleLabel": "Role 4",
+            "roleKey": "role4"
+        }
+    ]);
     let dispatch = useDispatch();
+    let usersNew = useSelector(state => state.users);
+    // console.log(usersNew);
+    const fetchRoleData = async () => {
+        dispatch(fetchRole(roleData));
+    }
 
     const fetchAllUserListing = async () => {
-        crud.getData('/users')
-            .then(response => {
-                // console.log(response.data);
-                setUsers(response.data);
-                dispatch(fetchUser(response.data))
-            })
-            .catch(err => console.log(err));
+        var fetchedData = dispatch(fetchUser(usersNew))
+        // console.log(fetchedData);
+        setUsers(fetchedData.payload)
+        // console.log(users);
+        // crud.getData('/users')
+        //     .then(response => {
+        //         // console.log(response.data);
+        //         setUsers(response.data);
+        //         dispatch(fetchUser(response.data))
+        //     })
+        //     .catch(err => console.log(err));
     }
-    function handleDelete(id) {
+    function handleDelete(username) {
         // console.log(id);
-        dispatch(removeUser(id))
+        dispatch(removeUser(username))
         // const confirmBtn = document.getElementById('confirmBtn');
         // confirmBtn.onclick = function () {
         //     crud.deleteData(`/users/${id}`);
@@ -29,6 +61,7 @@ export default function UserListing() {
 
     useEffect(() => {
         fetchAllUserListing()
+        fetchRoleData()
     }, []);
 
     return (
