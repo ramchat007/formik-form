@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import crud from '../services/CrudService';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, removeUser } from '../store/slices/UserSlice';
 import { fetchRole } from '../store/slices/RoleSlice';
@@ -30,6 +30,7 @@ export default function UserListing() {
         }
     ]);
     let dispatch = useDispatch();
+    let navigate = useNavigate();
     let usersNew = useSelector(state => state.users);
     // console.log(usersNew);
     const fetchRoleData = async () => {
@@ -49,14 +50,15 @@ export default function UserListing() {
         //     })
         //     .catch(err => console.log(err));
     }
-    function handleDelete(username) {
+    function handleDelete(id) {
         // console.log(id);
-        dispatch(removeUser(username))
-        // const confirmBtn = document.getElementById('confirmBtn');
-        // confirmBtn.onclick = function () {
-        //     crud.deleteData(`/users/${id}`);
-        // fetchAllUserListing();
-        // }
+        const confirmBtn = document.getElementById('confirmBtn');
+        confirmBtn.onclick = function () {
+            //     crud.deleteData(`/users/${id}`);
+            // fetchAllUserListing();
+            dispatch(removeUser(id))
+            navigate("/");
+        }
     }
 
     useEffect(() => {
@@ -77,7 +79,7 @@ export default function UserListing() {
                                 <h6 className="card-subtitle mb-2 text-muted">{obj.roleKey}</h6>
                                 <p className="card-text">{obj.email}</p>
                                 <Link className="btn btn-secondary" aria-current="page" to={`/add-user/${obj.id}`}>Edit </Link>
-                                <button className='btn btn-danger ms-2' onClick={function () { handleDelete(obj.id) }} >Delete</button>
+                                <button className='btn btn-danger ms-2' onClick={function () { handleDelete(obj.id) }} data-bs-toggle="modal" data-bs-target="#deleteUserModal">Delete</button>
                             </div>
                         </li>)
                 }

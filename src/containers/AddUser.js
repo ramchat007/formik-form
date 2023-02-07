@@ -130,7 +130,8 @@ function AddUser() {
                 //     return obj;
                 // }
                 // })
-                dispatch(existingUser({ data, id }))
+                dispatch(existingUser({ data, id }));
+                navigate("/user-listing");
                 // console.log(existingUser({ data, id }));
                 // console.log(usersNew);
                 // console.log(typeof usersNew);
