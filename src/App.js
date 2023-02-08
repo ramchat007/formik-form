@@ -9,9 +9,8 @@ import './App.css';
 import Home from './containers/Home';
 import UserListing from './containers/UserListing';
 import RoleListing from './containers/RoleListing';
-import CreateUser from './containers/CreateUser';
-// import EditUser from './containers/EditUser';
 import AddUser from './containers/AddUser';
+import AddRole from './containers/AddRole';
 
 function App() {
   return (
@@ -23,9 +22,10 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/user-listing" element={<UserListing />}></Route>
             <Route path="/role-listing" element={<RoleListing />}></Route>
-            <Route path="/create-user" element={<CreateUser />}></Route>
-            <Route path="/add-user/:id" element={<AddUser />}></Route>
+            <Route path="/edit-user/:id" element={<AddUser />}></Route>
             <Route path="/add-user" element={<AddUser />}></Route>
+            <Route path="/add-role" element={<AddRole />}></Route>
+            <Route path="/edit-role/:id" element={<AddRole />}></Route>
           </Routes>
         </div>
       </BrowserRouter>

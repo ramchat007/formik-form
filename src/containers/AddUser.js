@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-// import crudServ from '../services/CrudService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { existingUser, fetchUser, newUser } from '../store/slices/UserSlice';
 
@@ -28,32 +27,11 @@ function AddUser() {
 
     const fetchRole = async () => {
         setRoleData(allRoles)
-        // crudServ.getData(`/roledata`)
-        //     .then(res => {
-        //         setRoleData(res.data)
-        //     }
-        //     )
-        //     .catch(err => console.log(err));
     }
     const fetchAllUserListing = async () => {
-        usersNew = usersNew.filter(ele => ele.id == id);
         if (!isAddMode) {
-            // console.log(usersNew.length);
-            // console.log(typeof usersNew);
-            // // console.log(isAddMode);
-            // usersNew[0].password = '';
-            // usersNew[0].confirmPassword = '';
+            usersNew = usersNew.filter(ele => ele.id == id);
             setFormValues(...usersNew)
-            // console.log(formValues);
-            // crudServ.getData(`/users/${id}`)
-            //     .then(res => {
-            //         let newData = res.data
-            //         newData.password = '';
-            //         newData.confirmPassword = '';
-            //         setFormValues(newData)
-            //     }
-            //     )
-            //     .catch(err => console.log(err));
         }
     }
 
@@ -67,12 +45,13 @@ function AddUser() {
         email: Yup.string().required('Email is required').email('Email is invalid'),
         roleKey: Yup.string().required("Role is required"),
         password: Yup.string()
-            .required('Password is required')
-            .min(6, 'Password must be at least 6 characters')
-            .max(40, 'Password must not exceed 40 characters'),
+            .concat(isAddMode ? Yup.string().required('Password is required') : null)
+            .min(6, 'Password must be at least 6 characters'),
         confirmPassword: Yup.string()
-            .required('Confirm Password is required')
-            .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
+            .when('password', (password, schema) => {
+                if (password || isAddMode) return schema.required('Confirm Password is required');
+            })
+            .oneOf([Yup.ref('password')], 'Passwords must match')
     });
 
     const formik = useFormik({
@@ -82,89 +61,22 @@ function AddUser() {
         onSubmit: async (data) => {
             if (isAddMode) {
                 data.id = userId
-                dispatch(newUser(data));
-                navigate("/user-listing")
-                //     let emailFound = false;
-                //     const existingData = await crudServ.getData("/users")
-                //         .then(res => { return res.data })
-                //         .catch(err => console.log(err));
-                //     existingData.filter(res => {
-                //         if (res.email !== data.email) {
-                //             emailFound = false
-                //         } else {
-                //             emailFound = true
-                //             console.log("Email already exists");
-                //             formik.errors.email = "Email already exists"
-                //         }
-                //     })
-                //     if (!emailFound) {
-                //         crudServ.postData("/users", data)
-                //             .then(res => {
-                //                 console.log(res.data);
-                //                 dispatch(newUser(res.data))
-                //                 navigate("/user-listing")
-
-                //             }
-                //             )
-                //             .catch(err => console.log(err));
-                //     }
+                if (usersNew.length > 0) {
+                    for (let i = 0; i < usersNew.length; i++) {
+                        const element = usersNew[i];
+                        if (element.email === data.email) {
+                            formik.errors.email = "User already registered"
+                        }
+                    }
+                }
+                else {
+                    dispatch(newUser(data));
+                    navigate("/user-listing");
+                }
             } else {
-                // usersNew = usersNew[id].push(data)
-                // newData = { data }
-                // newData = [...usersNew, data]
-                // console.log(usersNew);
-
-                // const updateValue = usersNew.map(obj => {
-                //     console.log(obj.id);
-                //     console.log(id);
-                //     if (obj.id === id) {
-                //     console.log(obj.firstname);
-                //     console.log(data.firstname);
-                //     obj.firstname = data.firstname;
-                //     obj.lastname = data.lastname;
-                //     obj.username = data.username;
-                //     obj.email = data.email;
-                //     obj.password = data.password;
-                //     obj.confirmPassword = data.confirmPassword;
-                //     obj.roleKey = data.roleKey
-                //     return obj;
-                // }
-                // })
                 dispatch(existingUser({ data, id }));
                 navigate("/user-listing");
-                // console.log(existingUser({ data, id }));
-                // console.log(usersNew);
-                // console.log(typeof usersNew);
-                // const newValue = usersNew.forEach(element => {
-                //     console.log(element.id);
-                //     console.log(id);
-                //     if (element.id == id) {
-                //         element = { data }
-                //     }
-                // });
-
-                // console.log(newValue);
-
-                // console.log(usersNew[id]);
-                // const updateValue = usersNew[index] = { data };
-                // const updateValue = usersNew.filter(ele => ele.id == id);
-                // console.log(updateValue);
-                // console.log(typeof updateValue);
-
-
-                // dispatch(newUser(newData))
-                //     crudServ.updateData(`/users/${id}`, data)
-                //         .then(res => {
-                //             console.log(res.data);
-                //             dispatch(newUser(res.data))
-                //             navigate("/user-listing")
-
-                //         }
-                //         )
-                //         .catch(err => console.log(err));
             }
-
-
         },
     });
 
