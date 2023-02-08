@@ -66,6 +66,9 @@ function AddUser() {
                         const element = usersNew[i];
                         if (element.email === data.email) {
                             formik.errors.email = "User already registered"
+                        } else {
+                            dispatch(newUser(data));
+                            navigate("/user-listing");
                         }
                     }
                 }
