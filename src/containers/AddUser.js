@@ -61,23 +61,28 @@ function AddUser() {
         onSubmit: async (data) => {
             if (isAddMode) {
                 data.id = userId
-                if (usersNew.length > 0) {
-                    for (let i = 0; i < usersNew.length; i++) {
-                        const element = usersNew[i];
-                        if (element.email === data.email) {
-                            formik.errors.email = "User already registered"
-                        } else {
-                            dispatch(newUser(data));
-                            navigate("/user-listing");
-                        }
-                    }
-                }
-                else {
-                    dispatch(newUser(data));
-                    navigate("/user-listing");
-                }
+                // console.log(usersNew.length);
+                // let emailFound;
+                // for (let i = 0; i < usersNew.length; i++) {
+                //     const element = usersNew[i];
+                //     if (element.email === data.email) {
+                //         formik.errors.email = "User already registered"
+                //         emailFound = true;
+                //     } else {
+                //         emailFound = false;
+                //     }
+                // }
+                // if (!emailFound) {
+
+                // }
+                dispatch(newUser(data));
+                navigate("/user-listing");
             } else {
-                dispatch(existingUser({ data, id }));
+                let newData = [...usersNew];
+                const index = newData.findIndex(x => x.id == id);
+                newData.splice(index, 1)
+                newData.push(data);
+                dispatch(existingUser(newData));
                 navigate("/user-listing");
             }
         },

@@ -39,7 +39,7 @@ export default function UserListing() {
                     <ul className='listingWrap'>
                         {
                             users && users.map((obj) =>
-                                <li className='card' key={obj.id}>
+                                <li className='card' key={obj.id} value={obj.id}>
                                     <div className="card-body">
                                         <p className="card-text">{obj.username}</p>
                                         <h5 className="card-title">{obj.firstname} {obj.lastname}</h5>

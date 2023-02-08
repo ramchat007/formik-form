@@ -11,8 +11,7 @@ const userSlice = createSlice({
             return action.payload
         },
         existingUser(state, action) {
-            state.splice(action.payload.id, 1)
-            state.push(action.payload.data);
+            state = action.payload
             return state
         },
         removeUser(state, action) {
