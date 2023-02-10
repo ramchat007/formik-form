@@ -17,12 +17,6 @@ function AddRole() {
     const { id } = useParams();
     var userId = allRoles.length;
     const isAddMode = !id;
-    const fetchAllUserListing = async () => {
-        allRoles = allRoles.filter(ele => ele.id == id);
-        if (!isAddMode) {
-            setFormValues(...allRoles)
-        }
-    }
 
     const validationSchema = Yup.object().shape({
         roleLabel: Yup.string().required("Role Label is required"),
@@ -40,7 +34,7 @@ function AddRole() {
                 navigate("/role-listing");
             } else {
                 let newData = [...allRoles];
-                const index = newData.findIndex(x => x.id == id);
+                const index = newData.findIndex(x => x.id === id);
                 newData.splice(index, 1)
                 newData.push(data);
                 dispatch(existingRole(newData));
@@ -53,6 +47,12 @@ function AddRole() {
 
     useEffect(() => {
         if (!isAddMode) {
+            const fetchAllUserListing = async () => {
+                allRoles = allRoles.filter(ele => ele.id === id);
+                if (!isAddMode) {
+                    setFormValues(...allRoles)
+                }
+            };
             fetchAllUserListing();
         }
     }, []);

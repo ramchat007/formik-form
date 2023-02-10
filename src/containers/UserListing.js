@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, removeUser } from '../store/slices/UserSlice';
 
@@ -7,17 +7,9 @@ export default function UserListing() {
     let [users, setUsers] = useState([]);
     let [roleData, setRoleData] = useState([]);
     let dispatch = useDispatch();
-    let navigate = useNavigate();
     let usersNew = useSelector(state => state.users);
     let allRoles = useSelector(state => state.role);
-    const fetchRoleData = async () => {
-        setRoleData(allRoles)
-    }
 
-    const fetchAllUserListing = async () => {
-        var fetchedData = dispatch(fetchUser(usersNew));
-        setUsers(fetchedData.payload);
-    }
     function handleDelete(id) {
         const confirmBtn = document.getElementById('confirmBtn');
         confirmBtn.onclick = function () {
@@ -26,6 +18,14 @@ export default function UserListing() {
     }
 
     useEffect(() => {
+        const fetchRoleData = async () => {
+            setRoleData(allRoles)
+        };
+
+        const fetchAllUserListing = async () => {
+            var fetchedData = dispatch(fetchUser(usersNew));
+            setUsers(fetchedData.payload);
+        };
         fetchAllUserListing()
         fetchRoleData()
     }, [usersNew]);

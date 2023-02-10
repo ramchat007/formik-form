@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { fetchRole, removeRole } from '../store/slices/RoleSlice';
 
 
 export default function RoleListing() {
     let [roleData, setRoleData] = useState([]);
     let dispatch = useDispatch();
-    let navigate = useNavigate();
     let allRoles = useSelector(state => state.role);
 
-    const fetchRoleData = async () => {
-        var fetchedRole = dispatch(fetchRole(allRoles));
-        setRoleData(fetchedRole.payload);
-    }
+
     function handleDelete(id) {
         const confirmBtn = document.getElementById('confirmBtn');
         confirmBtn.onclick = function () {
@@ -22,6 +18,10 @@ export default function RoleListing() {
     }
 
     useEffect(() => {
+        const fetchRoleData = async () => {
+            var fetchedRole = dispatch(fetchRole(allRoles));
+            setRoleData(fetchedRole.payload);
+        };
         fetchRoleData();
     }, [allRoles]);
 

@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { useNavigate, useParams } from 'react-router-dom';
-import { existingUser, fetchUser, newUser } from '../store/slices/UserSlice';
+import { existingUser, newUser } from '../store/slices/UserSlice';
 
 function AddUser() {
     let allRoles = useSelector(state => state.role);
@@ -25,15 +25,6 @@ function AddUser() {
     var userId = usersNew.length;
     const isAddMode = !id;
 
-    const fetchRole = async () => {
-        setRoleData(allRoles)
-    }
-    const fetchAllUserListing = async () => {
-        if (!isAddMode) {
-            usersNew = usersNew.filter(ele => ele.id == id);
-            setFormValues(...usersNew)
-        }
-    }
 
     const validationSchema = Yup.object().shape({
         firstname: Yup.string().required("Firstname is required"),
@@ -79,7 +70,7 @@ function AddUser() {
                 navigate("/user-listing");
             } else {
                 let newData = [...usersNew];
-                const index = newData.findIndex(x => x.id == id);
+                const index = newData.findIndex(x => x.id === id);
                 newData.splice(index, 1)
                 newData.push(data);
                 dispatch(existingUser(newData));
@@ -90,8 +81,19 @@ function AddUser() {
 
     useEffect(() => {
         if (!isAddMode) {
+
+            const fetchAllUserListing = async () => {
+                if (!isAddMode) {
+                    usersNew = usersNew.filter(ele => ele.id === id);
+                    setFormValues(...usersNew)
+                }
+            };
             fetchAllUserListing();
         }
+
+        const fetchRole = async () => {
+            setRoleData(allRoles)
+        };
         fetchRole();
     }, []);
 
