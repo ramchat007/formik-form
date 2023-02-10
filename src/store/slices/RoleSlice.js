@@ -11,8 +11,7 @@ const roleSlice = createSlice({
             return action.payload
         },
         existingRole(state, action) {
-            state.splice(action.payload.id, 1)
-            state.push(action.payload.data);
+            state = action.payload
             return state
         },
         removeRole(state, action) {

@@ -22,14 +22,13 @@ export default function UserListing() {
         const confirmBtn = document.getElementById('confirmBtn');
         confirmBtn.onclick = function () {
             dispatch(removeUser(id))
-            navigate("/");
         }
     }
 
     useEffect(() => {
         fetchAllUserListing()
         fetchRoleData()
-    }, []);
+    }, [usersNew]);
 
     return (
         <>

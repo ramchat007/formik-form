@@ -60,7 +60,7 @@ function AddUser() {
         enableReinitialize: true,
         onSubmit: async (data) => {
             if (isAddMode) {
-                data.id = userId
+                data.id = userId;
                 // console.log(usersNew.length);
                 // let emailFound;
                 // for (let i = 0; i < usersNew.length; i++) {

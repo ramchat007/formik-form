@@ -17,14 +17,13 @@ export default function RoleListing() {
     function handleDelete(id) {
         const confirmBtn = document.getElementById('confirmBtn');
         confirmBtn.onclick = function () {
-            dispatch(removeRole(id))
-            navigate("/role-listing");
+            dispatch(removeRole(id));
         }
     }
 
     useEffect(() => {
         fetchRoleData();
-    }, []);
+    }, [allRoles]);
 
     return (
         <>

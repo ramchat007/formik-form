@@ -39,7 +39,11 @@ function AddRole() {
                 dispatch(newRole(data));
                 navigate("/role-listing");
             } else {
-                dispatch(existingRole({ data, id }));
+                let newData = [...allRoles];
+                const index = newData.findIndex(x => x.id == id);
+                newData.splice(index, 1)
+                newData.push(data);
+                dispatch(existingRole(newData));
                 navigate("/role-listing");
             }
 
